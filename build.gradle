@@ -1,0 +1,72 @@
+buildscript {
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+        maven { url "http://repo.spring.io/libs-snapshot"}
+        maven { url "http://repo.spring.io/plugins-release"}
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+//apply plugin: 'eclipse-wtp'
+apply plugin: 'org.springframework.boot'
+//apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+ext {
+    springBootCfServiceBrokerVersion = "2.4.0"
+    springBootVersion = '1.5.2.RELEASE'
+
+    version = '2.4'
+
+    hibernateValidatorVersion = '5.1.0.Final'
+    jsonPathVersion = '0.9.1'
+}
+
+jar {
+    baseName = 'paasta-sourcecontrol-broker'
+}
+//war {
+//    baseName = 'paasta-sourcecontrol-broker'
+//    version =  version
+//}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+    maven { url "http://repo.spring.io/plugins-release"}
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+
+    //compile name: 'openpaas-service-java-broker.jar'
+    compile files('libs/openpaas-service-java-broker.jar')
+
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    //compile("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("com.jayway.jsonpath:json-path")
+
+    compile("org.apache.commons:commons-dbcp2")
+    runtime "mysql:mysql-connector-java:5.1.27"
+    compile "org.springframework:spring-jdbc:4.0.0.M3"
+    compile "org.projectlombok:lombok:1.16.16"
+}

@@ -1,0 +1,6 @@
+---
+applications:
+- name: paasta-service-java-broker
+  memory: 512M
+  instances: 1
+  path: build/libs/paasta-service-java-broker.jar
