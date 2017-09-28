@@ -5,7 +5,7 @@
 
 형상관리 서비스 브로커가 수행하는 형상관리 서비스 관리 작업은 다음과 같습니다.
 
-- Provisioning : 형상관리 서비스 인스턴스 생성 (parameters에 "owner", "org_name" 필수)
+- Provisioning : 형상관리 서비스 인스턴스 생성 ( parameters "owner", "org_name" 필수 )
 - Deprovisioning : 형상관리 서비스 인스턴스 삭제
 
 [서비스팩 개발 가이드](https://github.com/OpenPaaSRnD/Documents-PaaSTA-1.0/blob/master/Development-Guide/ServicePack_develope_guide.md)
