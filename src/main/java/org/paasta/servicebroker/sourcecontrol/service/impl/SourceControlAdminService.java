@@ -29,43 +29,43 @@ public class SourceControlAdminService {
 	 * The Admin id
 	 */
 	@Value("${admin.id}")
-	String admin_Id;
+	String adminId;
 
 	/**
 	 * The Admin pwd.
 	 */
 	@Value("${admin.pwd}")
-	String admin_pwd;
+	String adminPwd;
 
 	/**
 	 * The Api Repositories.
 	 */
 	@Value("${api.base}")
-	String api_base;
+	String apiBase;
 
 	/**
 	 * The Api Repositories.
 	 */
 	@Value("${api.repo}")
-	String api_repo;
+	String apiRepo;
 
 	/**
 	 * The Api users.
 	 */
 	@Value("${api.users}")
-	String api_users;
+	String apiUsers;
 
 	/**
 	 * Request parameter key : owner
 	 */
 	@Value("${param.key.owner}")
-	String param_owner;
+	String paramOwner;
 
 	/**
 	 * Request parameter key : orgname
 	 */
 	@Value("${param.key.orgname}")
-	String param_orgname;
+	String paramOrgname;
 
 	/**
 	 * The Jpa service instance repository.
@@ -96,7 +96,7 @@ public class SourceControlAdminService {
 	@Autowired
 	JpaScRepoPermissionRepository jpaScRepoPermissionRepository;
 
-	private Logger logger = LoggerFactory.getLogger(SourceControlAdminService.class);
+	private static final Logger logger = LoggerFactory.getLogger(SourceControlAdminService.class);
 
 	// [ 내부 DB Access ]=================================================================================================
 
@@ -145,7 +145,7 @@ public class SourceControlAdminService {
 	public void createUser(CreateServiceInstanceRequest request) throws SourceControlServiceException {
 
 		// [내부 DB] "형상관리 사용자 : SC_USER" 테이블에 데이터 생성
-		String owner = (String) request.getParameters().get(param_owner);
+		String owner = (String) request.getParameters().get(paramOwner);
 		jpaScUserRepository.save(JpaScUser.builder().userId(owner).userName(null).userMail(owner).userDesc(null).build());
 	}
 
@@ -157,7 +157,7 @@ public class SourceControlAdminService {
 	 */
 	public void createScInstanceUser(CreateServiceInstanceRequest request) throws SourceControlServiceException {
 
-		String owner = (String) request.getParameters().get(param_owner);
+		String owner = (String) request.getParameters().get(paramOwner);
 
 		// 내부 DB "형상관리 서비스인스턴스_사용자_관계 : SC_INSTANCE_USER" 테이블에 데이터 생성
 		JpaScInstanceUser jpaScInstanceUser = JpaScInstanceUser.builder()
@@ -177,8 +177,8 @@ public class SourceControlAdminService {
 	 */
 	public void createServiceInstance(ServiceInstance serviceInstance, CreateServiceInstanceRequest request) {
 
-		String orgname = (String) request.getParameters().get(param_orgname);
-		String owner = (String) request.getParameters().get(param_owner);
+		String orgname = (String) request.getParameters().get(paramOrgname);
+		String owner = (String) request.getParameters().get(paramOwner);
 
 		JpaServiceInstance jpaServiceInstance = JpaServiceInstance.builder()
 				.instanceId(serviceInstance.getServiceInstanceId())
@@ -300,7 +300,7 @@ public class SourceControlAdminService {
 	// [ private Method ]=================================================================================================
 	private List<User> isExistUserByApi(CreateServiceInstanceRequest request) throws SourceControlServiceException {
 		RestTemplate restTemplate = new RestTemplate();
-		String owner = (String) request.getParameters().get(param_owner);
+		String owner = (String) request.getParameters().get(paramOwner);
 
 		List<User> users = new ArrayList<User>();
 
@@ -308,7 +308,7 @@ public class SourceControlAdminService {
 		HttpEntity<Object> entity = restCommonHeaders(null);
 
 		try {
-			ResponseEntity<List<User>> response = restTemplate.exchange(api_base + api_users, HttpMethod.GET, entity, responseType);
+			ResponseEntity<List<User>> response = restTemplate.exchange(apiBase + apiUsers, HttpMethod.GET, entity, responseType);
 			response.getBody().forEach(e -> {if (owner.equals(e.getName())) {users.add(e);}});
 
 		} catch (HttpServerErrorException e) {
@@ -324,7 +324,7 @@ public class SourceControlAdminService {
 	private void createUserByApi(CreateServiceInstanceRequest request) throws SourceControlServiceException {
 
 		RestTemplate restTemplate = new RestTemplate();
-		String owner = (String) request.getParameters().get(param_owner);
+		String owner = (String) request.getParameters().get(paramOwner);
 
 		User user = User.builder()
 				.name(owner)
@@ -338,7 +338,7 @@ public class SourceControlAdminService {
 		try {
 			HttpEntity<Object> entity = restCommonHeaders(user);
 
-			ResponseEntity<Map> response = restTemplate.exchange(api_base + api_users, HttpMethod.POST, entity, Map.class);
+			ResponseEntity<Map> response = restTemplate.exchange(apiBase + apiUsers, HttpMethod.POST, entity, Map.class);
 		} catch (HttpServerErrorException e) {
 			e.printStackTrace();
 			throw new SourceControlServiceException("User creation failed. : User ID [ "+owner+"] : "+e.getStatusCode()+e.getResponseBodyAsString());
@@ -353,7 +353,7 @@ public class SourceControlAdminService {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> entity = restCommonHeaders(null);
-		String url = api_base + api_users+"/"+userId;
+		String url = apiBase + apiUsers+"/"+userId;
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
 	}
 
@@ -366,7 +366,7 @@ public class SourceControlAdminService {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<Repository>> response = null;
 
-		response = restTemplate.exchange(api_base + api_repo, HttpMethod.GET, entity, responseType);
+		response = restTemplate.exchange(apiBase + apiRepo, HttpMethod.GET, entity, responseType);
 		List<Repository> repositories = response.getBody();
 
 		List<Repository> instanceRepositories = new ArrayList<Repository>();
@@ -385,7 +385,7 @@ public class SourceControlAdminService {
 		// scm-manager delete repository
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> entity = restCommonHeaders(null);
-		String url = api_base + api_repo+"/"+id;
+		String url = apiBase + apiRepo+"/"+id;
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
 	}
 
@@ -394,7 +394,7 @@ public class SourceControlAdminService {
 	// scmmanager HttpHeaders common
 	private HttpEntity<Object> restCommonHeaders(Object param) {
 
-		String basicAuth = "Basic " + (Base64.getEncoder().encodeToString((admin_Id + ":" + admin_pwd).getBytes()));
+		String basicAuth = "Basic " + (Base64.getEncoder().encodeToString((adminId + ":" + adminPwd).getBytes()));
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", basicAuth);

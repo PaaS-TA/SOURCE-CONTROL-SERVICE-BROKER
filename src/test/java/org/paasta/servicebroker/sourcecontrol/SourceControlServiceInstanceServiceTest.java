@@ -52,8 +52,8 @@ public class SourceControlServiceInstanceServiceTest {
         MockitoAnnotations.initMocks(this);
 
         ReflectionTestUtils.setField(sourceControlServiceInstanceService, "dashboard_url", TestConstants.DASHBOARD_URL);
-        ReflectionTestUtils.setField(sourceControlServiceInstanceService, "param_owner", TestConstants.PARAM_KEY_OWNER);
-        ReflectionTestUtils.setField(sourceControlServiceInstanceService, "param_orgname", TestConstants.PARAM_KEY_ORGNAME);
+        ReflectionTestUtils.setField(sourceControlServiceInstanceService, "paramOwner", TestConstants.PARAM_KEY_OWNER);
+        ReflectionTestUtils.setField(sourceControlServiceInstanceService, "paramOrgname", TestConstants.PARAM_KEY_ORGNAME);
 
     }
 
@@ -75,7 +75,7 @@ public class SourceControlServiceInstanceServiceTest {
                 .isInstanceOf(ServiceBrokerException.class).hasMessageContaining("Required");
 
         // case3.
-        //!(request.getParameters().containsKey(param_owner) && request.getParameters().containsKey(param_orgname))
+        //!(request.getParameters().containsKey(paramOwner) && request.getParameters().containsKey(paramOrgname))
         Map testParam = new HashMap<>();
         testParam.put("testparam", "testparam");
         request.setParameters(testParam);
@@ -83,7 +83,7 @@ public class SourceControlServiceInstanceServiceTest {
                 .isInstanceOf(ServiceBrokerException.class).hasMessageContaining("Required");
 
         // case4.
-        // !(request.getParameters().containsKey(param_owner) && request.getParameters().containsKey(param_orgname))
+        // !(request.getParameters().containsKey(paramOwner) && request.getParameters().containsKey(paramOrgname))
         testParam.put("owner", "testparam");
         request.setParameters(testParam);
         assertThatThrownBy(() -> sourceControlServiceInstanceService.createServiceInstance(request))

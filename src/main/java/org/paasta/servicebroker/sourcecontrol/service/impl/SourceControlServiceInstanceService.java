@@ -42,13 +42,13 @@ public class SourceControlServiceInstanceService implements ServiceInstanceServi
 	 * Request parameter key : owner
 	 */
 	@Value("${param.key.owner}")
-	String param_owner;
+	String paramOwner;
 
 	/**
 	 * Request parameter key : orgname
 	 */
 	@Value("${param.key.orgname}")
-	String param_orgname;
+	String paramOrgname;
 
 	/**
 	 * Provision -  PUT /v2/service_instances/:instance_id
@@ -65,8 +65,8 @@ public class SourceControlServiceInstanceService implements ServiceInstanceServi
 		// [ 유효성 체크 ]=================================================================================================
 		// 파라미터 체크
 		if (request.getParameters() == null || request.getParameters().isEmpty() ||
-				!(request.getParameters().containsKey(param_owner) && request.getParameters().containsKey(param_orgname))) {
-			throw new ServiceBrokerException("Required "+param_owner+" and "+param_orgname+" parameter.");
+				!(request.getParameters().containsKey(paramOwner) && request.getParameters().containsKey(paramOrgname))) {
+			throw new ServiceBrokerException("Required "+paramOwner+" and "+paramOrgname+" parameter.");
 		}
 
 		// 서비스 인스턴스 Guid Check

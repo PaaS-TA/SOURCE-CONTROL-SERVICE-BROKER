@@ -49,11 +49,11 @@ public class SourceControlAdminServiceTest {
     @InjectMocks
     SourceControlAdminService sourceControlAdminService;
 
-    @Value("${api.base}") String api_base;
-    @Value("${api.users}") String api_users;
-    @Value("${api.repo}") String api_repo;
-    @Value("${admin.id}") String admin_id;
-    @Value("${admin.pwd}") String admin_pwd;
+    @Value("${api.base}") String apiBase;
+    @Value("${api.users}") String apiUsers;
+    @Value("${api.repo}") String apiRepo;
+    @Value("${admin.id}") String adminId;
+    @Value("${admin.pwd}") String adminPwd;
 
     private static String spyTestUser = null;
 
@@ -62,13 +62,13 @@ public class SourceControlAdminServiceTest {
 
         MockitoAnnotations.initMocks(this);
 
-        ReflectionTestUtils.setField(sourceControlAdminService, "admin_Id", admin_id);
-        ReflectionTestUtils.setField(sourceControlAdminService, "admin_pwd", admin_pwd);
-        ReflectionTestUtils.setField(sourceControlAdminService, "api_base", api_base);
-        ReflectionTestUtils.setField(sourceControlAdminService, "api_repo", api_repo);
-        ReflectionTestUtils.setField(sourceControlAdminService, "api_users", api_users);
-        ReflectionTestUtils.setField(sourceControlAdminService, "param_owner", TestConstants.PARAM_KEY_OWNER);
-        ReflectionTestUtils.setField(sourceControlAdminService, "param_orgname", TestConstants.PARAM_KEY_ORGNAME);
+        ReflectionTestUtils.setField(sourceControlAdminService, "adminId", adminId);
+        ReflectionTestUtils.setField(sourceControlAdminService, "adminPwd", adminPwd);
+        ReflectionTestUtils.setField(sourceControlAdminService, "apiBase", apiBase);
+        ReflectionTestUtils.setField(sourceControlAdminService, "apiRepo", apiRepo);
+        ReflectionTestUtils.setField(sourceControlAdminService, "apiUsers", apiUsers);
+        ReflectionTestUtils.setField(sourceControlAdminService, "paramOwner", TestConstants.PARAM_KEY_OWNER);
+        ReflectionTestUtils.setField(sourceControlAdminService, "paramOrgname", TestConstants.PARAM_KEY_ORGNAME);
 
         Random rnd = new Random();
         StringBuilder sb = new StringBuilder();
