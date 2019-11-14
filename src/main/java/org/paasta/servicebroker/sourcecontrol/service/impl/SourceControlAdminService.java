@@ -329,7 +329,7 @@ public class SourceControlAdminService {
 		User user = User.builder()
 				.name(owner)
 				.displayName(owner)
-				.admin(true)
+				.admin(false)
 				.active(false)
 				.type("xml")
 				.properties(new ArrayList<Map<String, String>>())
