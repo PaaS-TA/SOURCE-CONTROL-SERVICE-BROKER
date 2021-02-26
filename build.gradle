@@ -6,6 +6,7 @@ buildscript {
         }
         maven { url "http://repo.spring.io/libs-snapshot"}
         maven { url "http://repo.spring.io/plugins-release"}
+        maven { url "https://repo.spring.io/milestone"}
         mavenCentral()
     }
     dependencies {
@@ -41,6 +42,7 @@ repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/libs-snapshot" }
     maven { url "http://repo.spring.io/plugins-release"}
+    maven { url "https://repo.spring.io/milestone"}
 }
 
 configurations {
@@ -59,9 +61,10 @@ dependencies {
     testCompile("com.jayway.jsonpath:json-path")
 
     compile("org.apache.commons:commons-dbcp2")
-    runtime "mysql:mysql-connector-java:5.1.27"
+    runtime("org.mariadb.jdbc:mariadb-java-client:2.2.6")
     compile "org.springframework:spring-jdbc:4.0.0.M3"
-    compile "org.projectlombok:lombok:1.16.16"
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok:1.16.16")
 }
 
 apply plugin: 'jacoco'
@@ -75,4 +78,9 @@ test {
     jacoco {
         destinationFile = file("$buildDir/jacoco/jacoco-overall.exec")
     }
+}
+
+
+springBoot {
+    mainClass = "org.paasta.servicebroker.sourcecontrol.config.Application"
 }
